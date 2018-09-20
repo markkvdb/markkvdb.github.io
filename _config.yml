@@ -20,6 +20,7 @@ baseurl: ""
 title: Mark van der Broek
 
 # Short description of your site
+<<<<<<< HEAD
 description: A virtual proof that I'm awesome
 
 # --- Local development options ---
@@ -31,12 +32,14 @@ description: A virtual proof that I'm awesome
 
 # baseurl should be an empty string
 #baseurl: ""
+=======
+description: Data Science and Operations Research
+>>>>>>> Update _config.yml
 
 # --- Navigation bar options --- #
 
 # List of links in the navigation bar
 navbar-links:
-  Blog: "index"
   About Me: "aboutme"
 <<<<<<< HEAD
   Projects: "projects"
@@ -46,6 +49,10 @@ navbar-links:
     - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
     - Learn markdown: "http://www.markdowntutorial.com/"
     - GitHub Pages: "https://pages.github.com/"
+<<<<<<< HEAD
+>>>>>>> Update _config.yml
+=======
+  Author's home: "http://deanattali.com"
 >>>>>>> Update _config.yml
 
 # Image to show in the navigation bar - image must be a square (width = height)
@@ -91,12 +98,12 @@ author:
 social-network-links:
   rss: true
   email: "markvanderbroek@gmail.com"
-#  facebook: 
+#  facebook: daattali
   github: markkvdb
-#  twitter: 
+#  twitter: daattali
   reddit: markkvdb
 #  google-plus: +DeanAttali
-  linkedin: mark-van-der-broek-67412831
+#  linkedin: daattali
 #  xing: yourname
 #  stackoverflow: "3943160/daattali"
 #  snapchat: deanat78
@@ -141,7 +148,7 @@ url-pretty: "mvanderbroek.com"  # eg. "deanattali.com/beautiful-jekyll"
 # --- Comments --- #
 
 # Fill in your Disqus shortname (NOT the userid) if you want to support Disqus comments
- disqus: markvanderbroek
+# disqus: ""
 
 # If you want to use JustComments fill with the API Key
 #just-comments: "ABCD-EFGH-IJKL"
