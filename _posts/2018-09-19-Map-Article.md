@@ -1148,7 +1148,7 @@ directly, so lets try it...
     ggplot(europe_map_data) + geom_sf() +
       theme_minimal()
 
-![](../images/map_article_2018_files/figure-markdown_strict/first_attempt_plot-1.png)
+![](../img/map_article_2018_files/figure-markdown_strict/first_attempt_plot-1.png)
 
 That does not seem to work... the reason is that, even though we removed
 the data of non European countries, we never changed the `bbox` setting
@@ -1167,7 +1167,7 @@ the `st_crop` function as
     ggplot(europe_map_data) + geom_sf() +
       theme_minimal()
 
-![](../images/map_article_2018_files/figure-markdown_strict/crop_box-1.png)
+![](../img/map_article_2018_files/figure-markdown_strict/crop_box-1.png)
 
 If you're familiar with the `ggplot2` workflow, it is now easy to
 construct the aesthetic mappings like you're used to. Our `map_data`
@@ -1178,7 +1178,7 @@ our European map as
     ggplot(europe_map_data) + geom_sf(aes(fill=SUBREGION)) +
       theme_minimal()
 
-![](../images/map_article_2018_files/figure-markdown_strict/europe_map_divide-1.png)
+![](../img/map_article_2018_files/figure-markdown_strict/europe_map_divide-1.png)
 
 The `sf` has many in-built functions; one of these functions is
 `st_area` which can be used to compute the area of polygons. The
@@ -1192,7 +1192,7 @@ population density of each country can be easily plotted by
       theme_minimal() + 
       scale_fill_continuous_tableau(palette = "Green")
 
-![](../images/map_article_2018_files/figure-markdown_strict/pop_density-1.png)
+![](../img/map_article_2018_files/figure-markdown_strict/pop_density-1.png)
 
 Using aggregating functions of the `tidyverse` package is also
 straight-forward. Lets create a similar population density plot but
@@ -1209,7 +1209,7 @@ instead for each subregion of Europe.
       theme_minimal() + 
       scale_fill_continuous_tableau(palette = "Green")
 
-![](../images/map_article_2018_files/figure-markdown_strict/pop_density_sub-1.png)
+![](../img/map_article_2018_files/figure-markdown_strict/pop_density_sub-1.png)
 
 As a last exercise lets find the centroid for each country.
 
@@ -1244,7 +1244,7 @@ Actually, I only want to see the centroid of the Netherlands...
       geom_point(aes(x=X, y=Y, colour="red")) + 
       theme_minimal()
 
-![](../images/map_article_2018_files/figure-markdown_strict/centroid_netherlands-1.png)
+![](../img/map_article_2018_files/figure-markdown_strict/centroid_netherlands-1.png)
 
 ### Setup
 
