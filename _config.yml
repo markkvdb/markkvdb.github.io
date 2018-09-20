@@ -6,7 +6,7 @@
 # baseurl is the website's URL without the hostname
 
 # If you are building a simple GitHub user page (http://username.github.io) then use these settings:
-url: 
+url: "http://markkvdb.github.io"
 baseurl: ""
 
 # If you are building a GitHub project page then use these settings:
@@ -82,7 +82,7 @@ footer-link-col: "#404040"
 # Change all these values or delete the ones you don't want.
 # Important: you must keep the "name" parameter, everything else you can remove
 author:
-  name: Some Person
+  name: Mark van der Broek
 
 # Select your active Social Network Links.
 # Uncomment the links you want to show in the footer and add your information to each link.
