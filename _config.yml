@@ -1,5 +1,21 @@
 # --- General options --- #
 
+<<<<<<< HEAD
+=======
+# url is the full website URL
+# baseurl is the website's URL without the hostname
+
+# If you are building a simple GitHub user page (http://username.github.io) then use these settings:
+url: 
+baseurl: ""
+
+# If you are building a GitHub project page then use these settings:
+#url: "http://username.github.io/projectname"
+#baseurl: "/projectname"
+
+# Of course don't forget to change the username and projectname to YOUR username and project
+
+>>>>>>> Update _config.yml
 # Name of website
 title: Mark van der Broek
 
@@ -20,9 +36,17 @@ description: A virtual proof that I'm awesome
 
 # List of links in the navigation bar
 navbar-links:
+  Blog: "index"
   About Me: "aboutme"
+<<<<<<< HEAD
   Projects: "projects"
   Useful Links: "usefullinks"
+=======
+  Resources:
+    - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
+    - Learn markdown: "http://www.markdowntutorial.com/"
+    - GitHub Pages: "https://pages.github.com/"
+>>>>>>> Update _config.yml
 
 # Image to show in the navigation bar - image must be a square (width = height)
 # Remove this parameter if you don't want an image in the navbar
