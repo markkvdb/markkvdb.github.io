@@ -47,7 +47,6 @@ $$
 
 In python we get
 
-
 ```python
 import numpy as np
 
