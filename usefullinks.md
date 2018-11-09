@@ -5,7 +5,7 @@ title: Useful links
 
 ### Reinforcement Learning
 
-- Test
+- [Key RL Papers](https://spinningup.openai.com/en/latest/spinningup/keypapers.html)
 
 ### Machine Learning
 
