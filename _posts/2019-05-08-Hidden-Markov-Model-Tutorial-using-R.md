@@ -34,13 +34,13 @@ discuss the three main problems for clarity.
 
 This simple HMM example in R is given below:
 
-# Define model
-V = c("HOT", "COLD")
-Q = matrix(c(0.7, 0.3, 0.4, 0.6), nrow=2, byrow=TRUE)
-D = c(1, 2, 3)
-Y = c(1, 3, 2, 3)
-B = matrix(c(0.2, 0.4, 0.4, 0.6, 0.3, 0.1), nrow=3)
-pi = c(0.5, 0.5)
+    # Define model
+    V = c("HOT", "COLD")
+    Q = matrix(c(0.7, 0.3, 0.4, 0.6), nrow=2, byrow=TRUE)
+    D = c(1, 2, 3)
+    Y = c(1, 3, 2, 3)
+    B = matrix(c(0.2, 0.4, 0.4, 0.6, 0.3, 0.1), nrow=3)
+    pi = c(0.5, 0.5)
 
 Forward probabilities
 ---------------------
