@@ -57,39 +57,41 @@ have to be considered.
 
 This method is commonly referred to as the law of total expectations or
 Tower rule. The idea is that we compute $$P(Y)$$ by using:
+
 $$
   P(Y\mid\lambda) =\sum_{x\in X} P(Y\mid x,\lambda)P(x\mid\lambda),
 $$
 
 where $$X$$ is the set of all valid hidden state sequences, e.g., $$X =\{V^T\}$$. We can compute the conditional probability of an observation sequence
 given the hidden state sequence as
+
 $$
   P(Y\mid x,\lambda) =\prod_{t=1}^T b_{x_t}(y_t).
 $$
 
 Below, I have the R code that computes the likelihood by brute-force:
 
-# Transform hidden state set to numerical set
-V_num = seq(1, length(V))
+    # Transform hidden state set to numerical set
+    V_num = seq(1, length(V))
 
-# All possible hidden state sequences 2^12
-V_all = permutations(n=length(V), r=length(Y), repeats.allowed=TRUE)
+    # All possible hidden state sequences 2^12
+    V_all = permutations(n=length(V), r=length(Y), repeats.allowed=TRUE)
 
-# Compute the likelihood given a hidden state sequence
-get_likelihood = function(V_seq, Y, B, pi, Q) {
-  l1 = prod(B[matrix(c(Y, V_seq), ncol=2)])
+    # Compute the likelihood given a hidden state sequence
+    get_likelihood = function(V_seq, Y, B, pi, Q) {
+      l1 = prod(B[matrix(c(Y, V_seq), ncol=2)])
 
-  # Compute all transition probabilitoes
-  Q_el = matrix(c(V_seq[1:(length(V_seq)-1)], V_seq[2:length(V_seq)]), ncol=2)
-  l2 = pi[V_seq[1]] * prod(Q[Q_el])
+      # Compute all transition probabilitoes
+      Q_el = matrix(c(V_seq[1:(length(V_seq)-1)], V_seq[2:length(V_seq)]), ncol=2)
+      l2 = pi[V_seq[1]] * prod(Q[Q_el])
 
-  return(l1 * l2)
-}
+      return(l1 * l2)
+    }
 
-total_l = sum(apply(V_all, 1, get_likelihood, Y, B, pi, Q))
-print(total_l)
+    total_l = sum(apply(V_all, 1, get_likelihood, Y, B, pi, Q))
+    print(total_l)
 
-## [1] 0.0099748
+    ## [1] 0.0099748
 
 This brute-force algorithm is extremely inefficient and is not
 applicable when the state space and/or sequence length is large. Just
@@ -122,7 +124,7 @@ The R-implementation can be found below
     alpha = forward_alg(Y, V_num, pi, B, Q)
     print(sum(alpha[, length(Y)]))
 
-## [1] 0.0099748
+    ## [1] 0.0099748
 
 We see that the brute-force method and the forward algorithm produce the
 same likelihood for our sequence.
@@ -147,6 +149,7 @@ sequence.
 
 Similar to the forward algorithm, the proceeds through the time-series
 from the start till the end. The can be computed as
+
 $$
   (x^*_1,\dots, x^*_T) =\argmax_{(x_1,\dots, x_T)\in X} P(Y_T, X_T\mid\lambda) P(X_T\mid\lambda).
 $$
@@ -238,28 +241,33 @@ Recall: we are interesting in estimating $$Q$$, $$B$$ and $$\pi$$ given our obse
 estimating the frequency of being in a certain state and/or counting the
 expected number of transitions from one state to another. More
 precisely, we estimate the transition probability from state $$i$$ to $$j$$ as
+
 $$
-\hat{q}_{i,j} =\frac{\text{expected number of transitions from state <pre>$$i$$</pre> to <pre>$$j$$</pre>}}{\text{expected number of transitions from state <pre>$$i$$</pre>}}.
+\hat{q}_{i,j} =\frac{\text{expected number of transitions from state $$i$$ to $$j$$}}{\text{expected number of transitions from state $$i$$}}.
 $$
 
 To estimate $$b_i(y_t)$$, i.e., the probability of observing $$y_t$$ in state $$X_t = i$$, we compute:
+
 $$
-\hat{b}_i(y_t) =\frac{\text{expected number of times in state <pre>$$i$$</pre> while observing <pre>$$y_t$$</pre>}}{\text{expected number of times in state <pre>$$i$$</pre>}}.
+\hat{b}_i(y_t) =\frac{\text{expected number of times in state $$i$$ while observing $$y_t$$}}{\text{expected number of times in state $$i$$}}.
 $$
 
 The initial state probabilities $$\pi$$ will follow directly from quantities computed in the EW algorithm.
 
 We now define
+
 $$
 \gamma_t(j) = P(X_t = j\mid Y,\lambda) =\frac{P(Y, X_t = j\mid\lambda)}{P(Y\mid\lambda)}
 $$
 
 which is the probability of being in state $$j$$ at time $$t$$ for a state sequence $$Y$$. By the Markovian conditional independence
+
 $$
 \alpha_t(j)\beta_t(j) = P(y_1,\dots, y_t, X_t = j\mid\lambda) P(y_{t+1},\dots, y_T\mid X_t = j,\lambda) = P(Y, X_t = j\mid\lambda).
 $$
 
 Hence, we can write $$\gamma_t(j)$$ in terms of $$\alpha_t(j)$$ and $$\beta_t(j)$$ as
+
 $$
 \gamma_t(j) =\frac{\alpha_t(j)\beta_t(j)}{P(Y\mid\lambda)}.
 $$
@@ -275,6 +283,7 @@ probabilities.
     gamma = ComputeGamma(alpha, beta, probY)
 
 We can now estimate the elements of $$B$$ as
+
 $$
 \hat{b}_j(k) =\frac{\sum_{t=1}^T\delta_{y_t, v_k}\gamma_t(j)}{\sum_{t=1}^T\gamma_t(j)},
 $$
@@ -303,11 +312,13 @@ where $$\delta_{i, j}$$ evaluates to 1 if $$i = j$$ and 0 otherwise.
     BHat = ComputeBHat(gamma, Y, D)
 
 To estimate the elements of $$Q$$ we define
+
 $$
 \psi_t(i,j) = P(X_t = i, X_{t+1} = j\mid Y,\lambda) =\frac{P(X_t = i, X_{t+1} = j, Y\mid\lambda)}{P(Y\mid\lambda)}
 $$
 
 which is the probability of being in state $$i$$ at time $$t$$ and being in state $$j$$ at time $$t+1$$ for a state sequence $$Y$$. This can be parameterised in terms of $$\alpha_t(j)$$ and $$\beta_t(j)$$ as
+
 $$
 \psi_t(i,j) =\frac{\alpha_t(i)q_{i,j}b_{t+1}(j)\beta_{t+1}(j)}{P(Y\mid\lambda)}.
 $$
@@ -327,6 +338,7 @@ $$
     psi = ComputePsi(alpha, beta, B, Q, Y, probY)
 
 The transition probabilities can now be estimated as
+
 $$
 \bar{q}_{i,j} =\frac{\sum_{t = 1}^{T-1}\psi_t(i,j)}{\sum_{t=1}^{T-1}\gamma_t(i)}
 $$
@@ -343,6 +355,7 @@ since the expected number of times in a state $$j$$ is equal to the expected num
     Q_new = ComputeQ(psi, gamma)
 
 The quantity
+
 $$
 \bar{\pi}_j =\gamma_1(j)
 $$
@@ -390,6 +403,7 @@ Numerical Issues
 
 The procedures described in this article cannot be used for long
 observation sequences ( $$>100$$) due to underflow problems. Recall that
+
 $$
 P(Y= Y_t, X = X_T\mid\lambda) =\prod_{t=1}^{T-1}q_{x_t, x_{t+1}}\prod_{t=1}^T b_{x_t}(y_t)
 $$
@@ -399,16 +413,19 @@ large $$T$$ this quantity is equal to zero for computers. Hence, we need to scal
 the values of $$Q$$ and $$B$$ such that we do not have this numerical issue.
 
 The standard approach is to standardise $$\alpha_t(j)$$ and $$\beta_t(j)$$ by normalising the values for each $$j\in [N]$$ by multiplying these values with
+
 $$
 c_t =\frac{1}{\sum_{i=1}^N\alpha_t(i)}
 $$
 
 to obtain
+
 $$
 \hat{\alpha}_t(j) =\alpha_t(j) c_t
 $$
 
 and
+
 $$
 \hat{\beta}_t(j) =\beta_t(j) c_t.
 $$
