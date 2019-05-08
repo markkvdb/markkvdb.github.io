@@ -104,23 +104,23 @@ We can use this recursively relationship to efficiently compute $$P(Y_T\mid\lamb
 
 The R-implementation can be found below
 
-forward_alg = function(Y, V, pi, B, Q) {
-  # Define empty forward matrix
-  forward = matrix(data=0, nrow=length(V), ncol=length(Y))
+    forward_alg = function(Y, V, pi, B, Q) {
+      # Define empty forward matrix
+      forward = matrix(data=0, nrow=length(V), ncol=length(Y))
 
-  # Fill first elements
-  forward[,1] = B[Y[1],] * pi
+      # Fill first elements
+      forward[,1] = B[Y[1],] * pi
 
-  # Now for all other time steps
-  for (t in 2:length(Y)) {
-forward[,t] = forward[,t-1] %*% Q * B[Y[t],]
-  }
+      # Now for all other time steps
+      for (t in 2:length(Y)) {
+    forward[,t] = forward[,t-1] %*% Q * B[Y[t],]
+      }
 
-  return(forward)
-}
+      return(forward)
+    }
 
-alpha = forward_alg(Y, V_num, pi, B, Q)
-print(sum(alpha[, length(Y)]))
+    alpha = forward_alg(Y, V_num, pi, B, Q)
+    print(sum(alpha[, length(Y)]))
 
 ## [1] 0.0099748
 
@@ -158,45 +158,45 @@ The psuedo-code for the is given in Alg 2.
 
 The R implementation of the Viterbi algorithm is given below:
 
-viterbi_alg = function(Y, V, pi, B, Q) {
-  # Define empty forward matrix
-  T_ = length(Y)
-  viterbi = matrix(data=0, nrow=length(V), ncol=length(Y))
-  path = matrix(data=0, nrow=length(V), ncol=length(Y))
+    viterbi_alg = function(Y, V, pi, B, Q) {
+      # Define empty forward matrix
+      T_ = length(Y)
+      viterbi = matrix(data=0, nrow=length(V), ncol=length(Y))
+      path = matrix(data=0, nrow=length(V), ncol=length(Y))
 
-  # Fill first elements
-  viterbi[,1] = B[Y[1],] * pi
-  path[,1] = rep(0, length(V))
+      # Fill first elements
+      viterbi[,1] = B[Y[1],] * pi
+      path[,1] = rep(0, length(V))
 
-  # Now for all other time steps
-  for (t in 2:length(Y)) {
-tmp_val = t(viterbi[,t-1] * Q)
-max_x = max.col(tmp_val)
-viterbi[,t] = tmp_val[,max_x][, 1] * B[Y[t],]
-path[,t] = max_x
-  }
+      # Now for all other time steps
+      for (t in 2:length(Y)) {
+    tmp_val = t(viterbi[,t-1] * Q)
+    max_x = max.col(tmp_val)
+    viterbi[,t] = tmp_val[,max_x][, 1] * B[Y[t],]
+    path[,t] = max_x
+      }
 
-  best_path_prob = max(viterbi[,T_])
-  best_path_end = which.max(viterbi[,T_])
+      best_path_prob = max(viterbi[,T_])
+      best_path_end = which.max(viterbi[,T_])
 
-  # Best path
-  best_path = rep(-1, T_)
-  best_path[T_] = best_path_end
-  for (t in (T_-1):1) {
-best_path[t] = path[best_path[t+1],t+1]
-  }
+      # Best path
+      best_path = rep(-1, T_)
+      best_path[T_] = best_path_end
+      for (t in (T_-1):1) {
+    best_path[t] = path[best_path[t+1],t+1]
+      }
 
-  return(list(best_path_prob, best_path))
-}
+      return(list(best_path_prob, best_path))
+    }
 
-viterbi_results = viterbi_alg(Y, V_num, pi, B, Q)
-print(viterbi_results[[1]])
+    viterbi_results = viterbi_alg(Y, V_num, pi, B, Q)
+    print(viterbi_results[[1]])
 
-## [1] 0.0037632
+    ## [1] 0.0037632
 
-print(V[viterbi_results[[2]]])
+    print(V[viterbi_results[[2]]])
 
-## [1] "COLD" "HOT"  "HOT"  "HOT"
+    ## [1] "COLD" "HOT"  "HOT"  "HOT"
 
 Determining the Optimal HMM Parameters
 --------------------------------------
@@ -212,27 +212,27 @@ First, similar to the forward probabilities $$\alpha_t(j) = P(y_1,\dots, y_t, x_
 probabilities using dynamic programming as:
 The R implementation is given below:
 
-back_prob_alg = function(Y, V, pi, B, Q) {
-# Define empty forward matrix
-  back_prob = matrix(data=0, nrow=length(V), ncol=length(Y))
-  T_max = length(Y)
+    back_prob_alg = function(Y, V, pi, B, Q) {
+    # Define empty forward matrix
+      back_prob = matrix(data=0, nrow=length(V), ncol=length(Y))
+      T_max = length(Y)
 
-  # Fill first elements
-  back_prob[, T_max] = rep(1, length(V))
+      # Fill first elements
+      back_prob[, T_max] = rep(1, length(V))
 
-  # Now for all other time steps
-  for (t in (T_max-1):1) {
-back_prob[,t] = Q %*% (back_prob[, t+1] * B[Y[t+1], ])
-  }
+      # Now for all other time steps
+      for (t in (T_max-1):1) {
+    back_prob[,t] = Q %*% (back_prob[, t+1] * B[Y[t+1], ])
+      }
 
-  return(back_prob)
-}
+      return(back_prob)
+    }
 
-beta = back_prob_alg(Y, V_num, pi, B, Q)
-probY = sum(pi * B[Y[1], ] * beta[, 1])
-print(probY)
+    beta = back_prob_alg(Y, V_num, pi, B, Q)
+    probY = sum(pi * B[Y[1], ] * beta[, 1])
+    print(probY)
 
-## [1] 0.0099748
+    ## [1] 0.0099748
 
 Recall: we are interesting in estimating $$Q$$, $$B$$ and $$\pi$$ given our observation sequence $$Y$$. As we will see later on, estimating these quantities typically involve
 estimating the frequency of being in a certain state and/or counting the
@@ -267,12 +267,12 @@ $$
 Recall that $$P(Y\mid\lambda)$$ can be easily obtained when computing the forward (or backward)
 probabilities.
 
-ComputeGamma <- function(alpha, beta, probY) {
-  # Obtain gamma for all t and v
-  gamma <- (alpha * beta) / probY
-}
+    ComputeGamma <- function(alpha, beta, probY) {
+      # Obtain gamma for all t and v
+      gamma <- (alpha * beta) / probY
+    }
 
-gamma = ComputeGamma(alpha, beta, probY)
+    gamma = ComputeGamma(alpha, beta, probY)
 
 We can now estimate the elements of $$B$$ as
 $$
@@ -281,26 +281,26 @@ $$
 
 where $$\delta_{i, j}$$ evaluates to 1 if $$i = j$$ and 0 otherwise.
 
-Delta <- function(A, b) {
-  return(as.integer(A == b))
-}
-Delta = Vectorize(Delta, "b")
+    Delta <- function(A, b) {
+      return(as.integer(A == b))
+    }
+    Delta = Vectorize(Delta, "b")
 
-ComputeBHat <- function(gamma, Y, D) {
-  # Obtain the delta variable
-  delta <- t(Delta(Y, D))
+    ComputeBHat <- function(gamma, Y, D) {
+      # Obtain the delta variable
+      delta <- t(Delta(Y, D))
 
-  # Compute nominator and denominator
-  deltaGamma <- delta %*% t(gamma)
-  deltaDenom <- matrix(data=1, nrow=nrow(delta), ncol=ncol(delta)) %*% t(gamma)
+      # Compute nominator and denominator
+      deltaGamma <- delta %*% t(gamma)
+      deltaDenom <- matrix(data=1, nrow=nrow(delta), ncol=ncol(delta)) %*% t(gamma)
 
-  # Divide element-wise
-  BHat <- deltaGamma / deltaDenom
+      # Divide element-wise
+      BHat <- deltaGamma / deltaDenom
 
-  return(BHat)
-}
+      return(BHat)
+    }
 
-BHat = ComputeBHat(gamma, Y, D)
+    BHat = ComputeBHat(gamma, Y, D)
 
 To estimate the elements of $$Q$$ we define
 $$
@@ -312,19 +312,19 @@ $$
 \psi_t(i,j) =\frac{\alpha_t(i)q_{i,j}b_{t+1}(j)\beta_{t+1}(j)}{P(Y\mid\lambda)}.
 $$
 
-ComputePsi <- function(alpha, beta, B, Q, Y, probY) {
-  # Create empty matrix
-  T_max = ncol(beta)
-  psi = array(-1, dim=c(T_max-1, nrow(Q), nrow(Q)))
+    ComputePsi <- function(alpha, beta, B, Q, Y, probY) {
+      # Create empty matrix
+      T_max = ncol(beta)
+      psi = array(-1, dim=c(T_max-1, nrow(Q), nrow(Q)))
 
-  for (t in 1:(T_max-1)) {
-psi[t,, ] = cbind(alpha[, t], alpha[, t]) * Q * rbind(B[Y[t+1], ], B[Y[t+1], ]) * rbind(beta[, t+1], beta[, t+1])
-  }
+      for (t in 1:(T_max-1)) {
+    psi[t,, ] = cbind(alpha[, t], alpha[, t]) * Q * rbind(B[Y[t+1], ], B[Y[t+1], ]) * rbind(beta[, t+1], beta[, t+1])
+      }
 
-  return(psi / probY)
-}
+      return(psi / probY)
+    }
 
-psi = ComputePsi(alpha, beta, B, Q, Y, probY)
+    psi = ComputePsi(alpha, beta, B, Q, Y, probY)
 
 The transition probabilities can now be estimated as
 $$
@@ -333,14 +333,14 @@ $$
 
 since the expected number of times in a state $$j$$ is equal to the expected number of transitions from state $$j$$ (for an ergodic Markov process).
 
-ComputeQ = function(psi, gamma) {
-  QNom = apply(psi, c(2,3), sum)
-  QDenom = t(rep(1, 2)) %x% apply(gamma[, 1:(ncol(gamma)-1)], 1, sum)
+    ComputeQ = function(psi, gamma) {
+      QNom = apply(psi, c(2,3), sum)
+      QDenom = t(rep(1, 2)) %x% apply(gamma[, 1:(ncol(gamma)-1)], 1, sum)
 
-  Q = QNom / QDenom
-}
+      Q = QNom / QDenom
+    }
 
-Q_new = ComputeQ(psi, gamma)
+    Q_new = ComputeQ(psi, gamma)
 
 The quantity
 $$
@@ -354,30 +354,30 @@ The idea of the BW algorithm is to iteratively update $$\gamma_t(\cdot)$$ and $$
 
 The R implementation of the Balm-Welsch algorithm is given below:
 
-balm_welch_alg = function(Y, Q, B, pi, V, D) {
-  converged = FALSE
-  max_iter = 1000
-  iter = 1
+    balm_welch_alg = function(Y, Q, B, pi, V, D) {
+      converged = FALSE
+      max_iter = 1000
+      iter = 1
 
-  while(!converged & iter!= max_iter) {
-# First compute alpa and beta
-alpha = forward_alg(Y, V, pi, B, Q)
-beta = back_prob_alg(Y, V, pi, B, Q)
-probY = sum(alpha[,ncol(alpha)])
+      while(!converged & iter!= max_iter) {
+    # First compute alpa and beta
+    alpha = forward_alg(Y, V, pi, B, Q)
+    beta = back_prob_alg(Y, V, pi, B, Q)
+    probY = sum(alpha[,ncol(alpha)])
 
-# E-Step
-gamma = ComputeGamma(alpha, beta, probY)
-psi = ComputePsi(alpha, beta, B, Q, Y, probY)
+    # E-Step
+    gamma = ComputeGamma(alpha, beta, probY)
+    psi = ComputePsi(alpha, beta, B, Q, Y, probY)
 
-# M-Step
-Q = ComputeQ(psi, gamma)
-B = ComputeBHat(gamma, Y, D)
-pi = gamma[, 1]
+    # M-Step
+    Q = ComputeQ(psi, gamma)
+    B = ComputeBHat(gamma, Y, D)
+    pi = gamma[, 1]
 
-# Increase iteration
-iter = iter + 1
-  }
-}
+    # Increase iteration
+    iter = iter + 1
+      }
+    }
 
 We have now addressed all main problems concerning HMMs. Note, however
 that our implementation in R is rather simplistic and probably has
@@ -413,113 +413,112 @@ $$
 \hat{\beta}_t(j) =\beta_t(j) c_t.
 $$
 
-ForwardProbAlgScaled = function(Y, V, pi, B, Q) {
-  # Define empty forward matrix
-  forward <- matrix(data=0, nrow=length(V), ncol=length(Y))
-  c_scale <- 1 / rep(1, ncol=length(Y))
+    ForwardProbAlgScaled = function(Y, V, pi, B, Q) {
+      # Define empty forward matrix
+      forward <- matrix(data=0, nrow=length(V), ncol=length(Y))
+      c_scale <- 1 / rep(1, ncol=length(Y))
 
-  # Fill first elements
-  forward[,1] <- B[Y[1],] * pi
-  c_scale[1] <- sum(forward[,1])
-  forward[,1] <- forward[,1] * c_scale[1]
+      # Fill first elements
+      forward[,1] <- B[Y[1],] * pi
+      c_scale[1] <- sum(forward[,1])
+      forward[,1] <- forward[,1] * c_scale[1]
 
-  # Now for all other time steps
-  for (t in 2:length(Y)) {
-tmp <- forward[,t-1] %*% Q * B[Y[t],]
-c_scale[t] <- 1 / sum(tmp)
-forward[,t] <- tmp * c_scale[t]
-  }
+      # Now for all other time steps
+      for (t in 2:length(Y)) {
+    tmp <- forward[,t-1] %*% Q * B[Y[t],]
+    c_scale[t] <- 1 / sum(tmp)
+    forward[,t] <- tmp * c_scale[t]
+      }
 
-  return(list(forward, c_scale))
-}
+      return(list(forward, c_scale))
+    }
 
-BackProbAlgScaled = function(Y, V, pi, B, Q, c_scale) {
-# Define empty forward matrix
-  back_prob <- matrix(data=0, nrow=length(V), ncol=length(Y))
-  T_max <- length(Y)
+    BackProbAlgScaled = function(Y, V, pi, B, Q, c_scale) {
+    # Define empty forward matrix
+      back_prob <- matrix(data=0, nrow=length(V), ncol=length(Y))
+      T_max <- length(Y)
 
-  # Fill first elements
-  back_prob[, T_max] <- rep(1, length(V)) * c_scale[T_max]
+      # Fill first elements
+      back_prob[, T_max] <- rep(1, length(V)) * c_scale[T_max]
 
-  # Now for all other time steps
-  for (t in (T_max-1):1) {
-back_prob[,t] <- Q %*% (back_prob[, t+1] * B[Y[t+1], ]) * c_scale[t]
-  }
+      # Now for all other time steps
+      for (t in (T_max-1):1) {
+    back_prob[,t] <- Q %*% (back_prob[, t+1] * B[Y[t+1], ]) * c_scale[t]
+      }
 
-  return(back_prob)
-}
+      return(back_prob)
+    }
 
-ComputeGammaScaled <- function(alpha, beta) {
-  # Obtain gamma for all t and v
-  alpha_beta <- alpha * beta
-  gamma <- t(t(alpha_beta) / apply(alpha_beta, 2, sum))
-}
+    ComputeGammaScaled <- function(alpha, beta) {
+      # Obtain gamma for all t and v
+      alpha_beta <- alpha * beta
+      gamma <- t(t(alpha_beta) / apply(alpha_beta, 2, sum))
+    }
 
-ComputePsiScaled <- function(alpha, beta, B, Q, Y) {
-  # Create empty matrix
-  T_max <- ncol(beta)
-  psi <- array(-1, dim=c(T_max-1, nrow(Q), nrow(Q)))
+    ComputePsiScaled <- function(alpha, beta, B, Q, Y) {
+      # Create empty matrix
+      T_max <- ncol(beta)
+      psi <- array(-1, dim=c(T_max-1, nrow(Q), nrow(Q)))
 
-  for (t in 1:(T_max-1)) {
-psi[t,, ] <- cbind(alpha[, t], alpha[, t]) * Q * rbind(B[Y[t+1], ], B[Y[t+1], ]) * rbind(beta[, t+1], beta[, t+1])
-psi[t,, ] <- psi[t,, ] / sum(psi[t,, ])
-  }
+      for (t in 1:(T_max-1)) {
+    psi[t,, ] <- cbind(alpha[, t], alpha[, t]) * Q * rbind(B[Y[t+1], ], B[Y[t+1], ]) * rbind(beta[, t+1], beta[, t+1])
+    psi[t,, ] <- psi[t,, ] / sum(psi[t,, ])
+      }
 
-  return(psi)
-}
+      return(psi)
+    }
 
 The adapted Balm-Welch algorithm is then given by
 
-BalmWelchAlg = function(Y, Q, B, pi, V, D) {
-  converged = FALSE
-  max_iter = 1000
-  iter = 1
-  prob_old = log(1e-12)
+    BalmWelchAlg = function(Y, Q, B, pi, V, D) {
+      converged = FALSE
+      max_iter = 1000
+      iter = 1
+      prob_old = log(1e-12)
 
-  while(!converged & iter!= max_iter) {
-# First compute alpa and beta
-forward_list <- ForwardProbAlgScaled(Y, V, pi, B, Q)
-c_scale <- forward_list[[2]]
-alpha <- forward_list[[1]]
-beta <- BackProbAlgScaled(Y, V, pi, B, Q, c_scale)
-prob_new <- log(1 / prod(c_scale))
+      while(!converged & iter!= max_iter) {
+    # First compute alpa and beta
+    forward_list <- ForwardProbAlgScaled(Y, V, pi, B, Q)
+    c_scale <- forward_list[[2]]
+    alpha <- forward_list[[1]]
+    beta <- BackProbAlgScaled(Y, V, pi, B, Q, c_scale)
+    prob_new <- log(1 / prod(c_scale))
 
-# E-Step
-gamma <- ComputeGammaScaled(alpha, beta)
-psi <- ComputePsiScaled(alpha, beta, B, Q, Y)
+    # E-Step
+    gamma <- ComputeGammaScaled(alpha, beta)
+    psi <- ComputePsiScaled(alpha, beta, B, Q, Y)
 
-# M-Step
-Q <- ComputeQ(psi, gamma)
-B <- ComputeBHat(gamma, Y, D)
-pi <- gamma[, 1]
+    # M-Step
+    Q <- ComputeQ(psi, gamma)
+    B <- ComputeBHat(gamma, Y, D)
+    pi <- gamma[, 1]
 
-# Update stopping rules
-if (prob_new - prob_old < 1e-4) {
-  converged <- TRUE
-}
-prob_old = prob_new
-iter <- iter + 1
-  }
+    # Update stopping rules
+    if (prob_new - prob_old < 1e-4) {
+      converged <- TRUE
+    }
+    prob_old = prob_new
+    iter <- iter + 1
+      }
 
-  return(list(Q = Q, B = B, pi = pi))
-}
+      return(list(Q = Q, B = B, pi = pi))
+    }
 
-model <- BalmWelchAlg(Y, Q, B, pi, V, D)
+    model <- BalmWelchAlg(Y, Q, B, pi, V, D)
 
-model[["Q"]]
+    model[["Q"]]
 
-##  [,1] [,2]
-## [1,]1 4.738597e-19
-## [2,]1 4.788997e-18
+    ##  [,1] [,2]
+    ## [1,]1 4.738597e-19
+    ## [2,]1 4.788997e-18
 
-model[["B"]]
+    model[["B"]]
 
-##  [,1] [,2]
-## [1,] 1.974110e-43 1.000000e+00
-## [2,] 3.333333e-01 9.278520e-20
-## [3,] 6.666667e-01 5.643931e-18
+    ##  [,1] [,2]
+    ## [1,] 1.974110e-43 1.000000e+00
+    ## [2,] 3.333333e-01 9.278520e-20
+    ## [3,] 6.666667e-01 5.643931e-18
 
-model[["pi"]]
+    model[["pi"]]
 
-## [1] 5.922329e-43 1.000000e+00
-
+    ## [1] 5.922329e-43 1.000000e+00
