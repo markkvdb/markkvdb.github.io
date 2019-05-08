@@ -243,13 +243,13 @@ expected number of transitions from one state to another. More
 precisely, we estimate the transition probability from state $$i$$ to $$j$$ as
 
 $$
-\hat{q}_{i,j} =\frac{\text{expected number of transitions from state $$i$$ to $$j$$}}{\text{expected number of transitions from state $$i$$}}.
+\hat{q}_{i,j} =\frac{\textrm{expected number of transitions from state } i \textrm{to } j}{\textrm{expected number of transitions from state } i}.
 $$
 
 To estimate $$b_i(y_t)$$, i.e., the probability of observing $$y_t$$ in state $$X_t = i$$, we compute:
 
 $$
-\hat{b}_i(y_t) =\frac{\text{expected number of times in state $$i$$ while observing $$y_t$$}}{\text{expected number of times in state $$i$$}}.
+\hat{b}_i(y_t) =\frac{\textrm{expected number of times in state  } i \textrm{ while observing } y_t}}{\textrm{expected number of times in state } i}.
 $$
 
 The initial state probabilities $$\pi$$ will follow directly from quantities computed in the EW algorithm.
