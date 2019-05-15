@@ -7,6 +7,7 @@ title: Useful Links
 
 - [Key RL Papers](https://spinningup.openai.com/en/latest/spinningup/keypapers.html): Most influential papers in RL research
 - [Introduction to Reinforcement Learning](http://incompleteideas.net/book/bookdraft2017nov5.pdf): Excellent introduction to Reinforcement Learning
+- [UCL Course in RL](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html): Popular RL course given at University College London by David Silver
 
 ### Machine Learning / Statistics
 
