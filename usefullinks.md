@@ -15,6 +15,7 @@ title: Useful Links
 - [Maximum Likelihood and Maximum A Posterior Explained](http://blog.christianperone.com/2019/01/mle/): Understanding these basic concepts in statistics
 - [The Data Science Lifecycle](https://www.textbook.ds100.org/ch/01/lifecycle_intro.html): Everything about DS projects
 - [Recipe for Training Neural Networks](http://karpathy.github.io/2019/04/25/recipe/): Hands-on tips and tricks
+- [Colah's Blog](http://colah.github.io): Interesting machine learning blog with excellent visual explanations and intuitions
 
 ### Programming
 
