@@ -16,6 +16,7 @@ title: Useful Links
 - [The Data Science Lifecycle](https://www.textbook.ds100.org/ch/01/lifecycle_intro.html): Everything about DS projects
 - [Recipe for Training Neural Networks](http://karpathy.github.io/2019/04/25/recipe/): Hands-on tips and tricks
 - [Colah's Blog](http://colah.github.io): Interesting machine learning blog with excellent visual explanations and intuitions
+- [Guide to Feature Extraction](https://mlwhiz.com/blog/2019/05/19/feature_extraction/): Hitchhiker's guide to feature extraction
 
 ### Programming
 
@@ -28,3 +29,4 @@ title: Useful Links
 
 - [DeepL Translator](https://www.deepl.com/translator): Best language translator
 - [Hacker News](https://www.ycombinator.com): Tech news
+- [Why Books Don't Work](https://andymatuschak.org/books/): Argument why books are ineffective for absorbing knowledge
