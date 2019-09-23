@@ -17,6 +17,8 @@ title: Useful Links
 - [Recipe for Training Neural Networks](http://karpathy.github.io/2019/04/25/recipe/): Hands-on tips and tricks
 - [Colah's Blog](http://colah.github.io): Interesting machine learning blog with excellent visual explanations and intuitions
 - [Guide to Feature Extraction](https://mlwhiz.com/blog/2019/05/19/feature_extraction/): Hitchhiker's guide to feature extraction
+- [Predictive Maintenance Solutions](https://docs.microsoft.com/en-us/azure/machine-learning/team-data-science-process/cortana-analytics-playbook-predictive-maintenance): Predictive mainentance solutions from a Machine Learning perspective.
+- [It's not just p=0.048 vs. p=0.052](https://statmodeling.stat.columbia.edu/2019/09/06/__trashed-2/): *Another* discussion about statistical significance.
 
 ### Programming
 
@@ -30,3 +32,5 @@ title: Useful Links
 - [DeepL Translator](https://www.deepl.com/translator): Best language translator
 - [Hacker News](https://www.ycombinator.com): Tech news
 - [Why Books Don't Work](https://andymatuschak.org/books/): Argument why books are ineffective for absorbing knowledge
+- [100 Best Books of the 21th Century](https://www.theguardian.com/books/2019/sep/21/best-books-of-the-21st-century): Includes some of my favourite books
+- [Sapiens as a blog post](https://neilkakkar.com/sapiens.html): Relates to the link-above about why books don't work. This is an excellent way to freshen up your memory of the book
