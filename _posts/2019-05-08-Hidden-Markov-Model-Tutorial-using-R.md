@@ -14,18 +14,18 @@ Model Formulation
 A HMM models a Markov process which affects some observerable
 process(es). Any HMM model can be defined with 5 elements, namely:
 
-1.  The set of $$N$$ hidden states $$V = \{v_1,\dots, v_N\}$$;
-2.  The transition matrix $$Q$$ where the $$i,j$$ -th element represents the transition probability of going from
+1. The set of $$N$$ hidden states $$V = \{v_1,\dots, v_N\}$$;
+2. The transition matrix $$Q$$ where the $$i,j$$ -th element represents the transition probability of going from
 hidden state $$x_i$$ to $$x_j$$;
-3.  A sequence of $$T$$ observations $$Y =\{y_1,\dots, y_T\}$$, each drawn from observation set $$D =\{d_1,\dots, d_d\}$$;
-4.  Functions $$b_i(y_t)$$ that contain the probability of particular observation at time $$t$$ given that the process is in state $$v_i$$. The entire set of functions is denoted by $$B =\{b_j(\cdot):\forall j\in [N]\}$$;
-5.  The initial hidden state probabilities for time $$t=0$$: $$\pi = [\pi_1,\dots,\pi_N]$$.
+3. A sequence of $$T$$ observations $$Y =\{y_1,\dots, y_T\}$$, each drawn from observation set $$D =\{d_1,\dots, d_d\}$$;
+4. Functions $$b_i(y_t)$$ that contain the probability of particular observation at time $$t$$ given that the process is in state $$v_i$$. The entire set of functions is denoted by $$B =\{b_j(\cdot):\forall j\in [N]\}$$;
+5. The initial hidden state probabilities for time $$t=0$$: $$\pi = [\pi_1,\dots,\pi_N]$$.
 
 We indicate $$\lambda$$ as a short-hand notation for the complete set of HMM parameters, i.e., $$\lambda = (Q, B,\pi)$$. The three main problems associated with HMMs are:
 
-1.  Find $$P(Y\mid\lambda)$$ for some observation sequence $$Y = (y_1,\dots, y_T)$$.
-2.  Given some $$Y$$ and $$\lambda$$, find the best (hidden) state sequence $$X = (x_1,\dots, x_T)$$.
-3.  Find the HMM parameters that maximises $$P(Y\mid\lambda)$$, i.e., find $$\lambda^* =\argmax_{\lambda}P(Y\mid\lambda)$$.
+1. Find $$P(Y\mid\lambda)$$ for some observation sequence $$Y = (y_1,\dots, y_T)$$.
+2. Given some $$Y$$ and $$\lambda$$, find the best (hidden) state sequence $$X = (x_1,\dots, x_T)$$.
+3. Find the HMM parameters that maximises $$P(Y\mid\lambda)$$, i.e., find $$\lambda^* =\argmax_{\lambda}P(Y\mid\lambda)$$.
 
 In the remainder of this article I will provide approaches to solve each
 of these problems and provide an implementation in R. Before discussing
