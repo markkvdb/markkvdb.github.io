@@ -68,12 +68,10 @@ author:
 social-network-links:
     rss: true
     email: "markvanderbroek@gmail.com"
-    #  facebook: daattali
     github: markkvdb
-    #  twitter: daattali
+    twitter: 1mvdb
     reddit: markkvdb
-#  google-plus: +DeanAttali
-#  linkedin: daattali
+    linkedin: mark-van-der-broek
 #  xing: yourname
 #  stackoverflow: "3943160/daattali"
 #  snapchat: deanat78
@@ -81,9 +79,6 @@ social-network-links:
 #  youtube: user/deanat78
 #  spotify: yourname
 #  telephone: +14159998888
-#  steam: deanat78
-#  twitch: yourname
-#  yelp: yourname
 
 # Select which share links to show in posts
 share-links-active:

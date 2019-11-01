@@ -25,7 +25,7 @@ We indicate $$\lambda$$ as a short-hand notation for the complete set of HMM par
 
 1. Find $$P(Y\mid\lambda)$$ for some observation sequence $$Y = (y_1,\dots, y_T)$$.
 2. Given some $$Y$$ and $$\lambda$$, find the best (hidden) state sequence $$X = (x_1,\dots, x_T)$$.
-3. Find the HMM parameters that maximises $$P(Y\mid\lambda)$$, i.e., find $$\lambda^* =\argmax_{\lambda}P(Y\mid\lambda)$$.
+3. Find the HMM parameters that maximises $$P(Y\mid\lambda)$$, i.e., find $$\lambda^* =\text{argmax}_{\lambda}P(Y\mid\lambda)$$.
 
 In the remainder of this article I will provide approaches to solve each
 of these problems and provide an implementation in R. Before discussing
