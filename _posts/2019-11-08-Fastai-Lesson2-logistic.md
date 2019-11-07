@@ -3,7 +3,7 @@ layout: post
 title: Logistic Regression in PyTorch from Scratch (Lesson 2)
 ---
 
-In this article we will explore the logistic regression and how we can implement it using PyTorch. Contrary to regular regressions where the output variable $y$ is continuous, logistic regressions concern binary variables, i.e.,
+In this article we will explore the logistic regression and how we can implement it using PyTorch. Contrary to regular regressions where the output variable $$y$$ is continuous, logistic regressions concern binary variables, i.e.,
 
 $$
 y = \begin{cases}
@@ -12,7 +12,7 @@ y = \begin{cases}
 \end{cases}
 $$
 
-We are interested in modelling the conditional probability of $y = 1$ given $\boldsymbol{x}$, i.e.,
+We are interested in modelling the conditional probability of $$y = 1$$ given $$\boldsymbol{x}$$, i.e.,
 
 $$
 p = P(y = 1 \mid \boldsymbol{X}; \boldsymbol{b}) = F(\boldsymbol{X}^T \boldsymbol{b})
@@ -20,17 +20,17 @@ $$
 
 ---
 
-*Now take a moment to think about the following: what properties do we want $F$ to have?*
+*Now take a moment to think about the following: what properties do we want $$F$$ to have?*
 
 ---
 
-Since we want to model conditional probabilities, we want $F$ to map to the domain $[0, 1]$. It now happens that the sigmoid function, let's call it $h$, has some very nice properties. It is defined as
+Since we want to model conditional probabilities, we want $$F$$ to map to the domain $$[0, 1]$$. It now happens that the sigmoid function, let's call it $$h$$, has some very nice properties. It is defined as
 
 $$
 h(x) = \frac{1}{1 + e^{-x}}.
 $$
 
-Ideally, we want $P(y = 1 \mid \boldsymbol{X}; \boldsymbol{b})$ to be close to 1 when $Y$ is 1 and close to 0 when $Y$ is 0. Before explaining how we can find parameters $b$ such that we come closest to the this ideal situation, let's generate some random data.
+Ideally, we want $$P(y = 1 \mid \boldsymbol{X}; \boldsymbol{b})$$ to be close to 1 when $$Y$$ is 1 and close to 0 when $$Y$$ is 0. Before explaining how we can find parameters $$b$$ such that we come closest to the this ideal situation, let's generate some random data.
 
 
 ```python
@@ -43,7 +43,7 @@ from fastai.basics import *
 n = 100
 ```
 
-Let's first create a sample of our $\boldsymbol{X}: n \times 2$ feature matrix. 
+Let's first create a sample of our $$\boldsymbol{X}: n \times 2$$ feature matrix. 
 
 
 ```python
@@ -63,13 +63,13 @@ x[:5,:]
 
 
 
-Next, we want to sample our latent variable $\boldsymbol{y}^*$ as
+Next, we want to sample our latent variable $$\boldsymbol{y}^*$$ as
 
 $$
 \boldsymbol{y}^* = \boldsymbol{X}^T\boldsymbol{b} + \boldsymbol{\varepsilon},
 $$
 
-where $\boldsymbol{b} = [2, -1]$ and $\boldsymbol{\varepsilon} \sim \text{Logistic}(0, 1)$
+where $$\boldsymbol{b} = [2, -1]$$ and $$\boldsymbol{\varepsilon} \sim \text{Logistic}(0, 1)$$
 
 
 ```python
@@ -95,7 +95,7 @@ y =
 \end{cases}
 $$
 
-This relates to the probability $p$ as follows
+This relates to the probability $$p$$ as follows
 $$
 \begin{align}
 P(y^* > 0) &= P(\boldsymbol{X}^T\boldsymbol{b} + \boldsymbol{\varepsilon} > 0) & \\
@@ -105,23 +105,22 @@ P(y^* > 0) &= P(\boldsymbol{X}^T\boldsymbol{b} + \boldsymbol{\varepsilon} > 0) &
 \end{align}
 $$
 
-
 ```python
 y = y_star > 0
 ```
 
 ## Linear regression
 
-Let's check what happens if we now try to model the relationship between the conditional probability and $\boldsymbol{X}$ as linear, i.e.,
+Let's check what happens if we now try to model the relationship between the conditional probability and $$\boldsymbol{X}$$ as linear, i.e.,
 
 $$
 p = \boldsymbol{X}^T\boldsymbol{b} + \boldsymbol{\varepsilon},
 $$
-where $\boldsymbol{\varepsilon} \sim (0, \sigma^2)$.
+where $$\boldsymbol{\varepsilon} \sim (0, \sigma^2)$$.
 
-Note that although we have no guarantee that $p$ lies in the interval $[0,1]$, this rarily happens. A bigger problem is the heteroskedasticity of the error term. The linear model assumes the errors are homoskedastic, but it is possible to incoorporate heteroskedastic errors by estimating white standard errors.
+Note that although we have no guarantee that $$p$$ lies in the interval $$[0,1]$$, this rarily happens. A bigger problem is the heteroskedasticity of the error term. The linear model assumes the errors are homoskedastic, but it is possible to incoorporate heteroskedastic errors by estimating white standard errors.
 
-Since we are dealing with a linear model, we do not need gradient descent and we can compute the MLE estimator in one line. The OLS (and MLE) estimator for $\boldsymbol{b}$ is given by
+Since we are dealing with a linear model, we do not need gradient descent and we can compute the MLE estimator in one line. The OLS (and MLE) estimator for $$\boldsymbol{b}$$ is given by
 
 $$
 \boldsymbol{b}_\text{MLE} = (\boldsymbol{X}^T\boldsymbol{X})^{-1}\boldsymbol{X}^T\boldsymbol{y}.
@@ -135,7 +134,6 @@ $$
 &= -2 \boldsymbol{X}^T \boldsymbol{y} + 2  \boldsymbol{X}^T  \boldsymbol{X} \boldsymbol{b}.
 \end{align}
 $$
-
 
 
 ```python
@@ -155,11 +153,11 @@ leg = ax.legend();
 ![png](../img/fastai-lesson2/output_10_0.png)
 
 
-Indeed, we observe that all observations lay between the $[0, 1]$ interval.
+Indeed, we observe that all observations lay between the $$[0, 1]$$ interval.
 
 ## Logistic regression
 
-Unlike the linear regression, the logistic regression has no closed-form solution. The most popular way of estimating the parameters $\boldsymbol{b}$ is to estimate the maximum likelihood estimator. Consider the following product
+Unlike the linear regression, the logistic regression has no closed-form solution. The most popular way of estimating the parameters $$\boldsymbol{b}$$ is to estimate the maximum likelihood estimator. Consider the following product
 
 $$
 \begin{align}
@@ -168,9 +166,9 @@ LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y}) &= \prod_{i=1}^N P(Y = 1 \mid
 \end{align}
 $$
 
-Remember that we wanted $P(y = 1 \mid \boldsymbol{x}_i; \boldsymbol{b})$ to be close to one when $y_i = 1$. If that's our goal, it means that we want $LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y})$ to be as large as possible. In other words, we want to find a $\boldsymbol{b}$ such that $LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y})$ is maximised.
+Remember that we wanted $$P(y = 1 \mid \boldsymbol{x}_i; \boldsymbol{b})$$ to be close to one when $$y_i = 1$$. If that's our goal, it means that we want $$LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y})$$ to be as large as possible. In other words, we want to find a $$\boldsymbol{b}$$ such that $$LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y})$$ is maximised.
 
-Since computers do not like the product of many numbers between $[0, 1]$ because it results in floating point problems (why would that be?). Therefore, we take the log of the likelihood function. Since the log is a monotonic function, maximising the likelihood is the same as maximising the log-likelihood, i.e.,
+Since computers do not like the product of many numbers between $$[0, 1]$$ because it results in floating point problems (why would that be?). Therefore, we take the log of the likelihood function. Since the log is a monotonic function, maximising the likelihood is the same as maximising the log-likelihood, i.e.,
 
 $$
 ll(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y}) = \sum_{i=1}^N y_i \log(h(\boldsymbol{x}_i^T\boldsymbol{b})) + (1-y_i) \log(1-h(\boldsymbol{x}_i^T\boldsymbol{b})).
@@ -252,7 +250,7 @@ In this post we learnt about the one of the oldest techniques to model binary ou
 
 After writing this post I realised that we can easily see how the logistic regression fits into the framework we discussed in the previous post with the three fundamental building blocks.
 
-1. The architecture $f$ that maps input $\boldsymbol{X}$ to outputs $\boldsymbol{y}$ with parameters $\boldsymbol{\theta}$ is in this case the sigmoid function with parameters;
+1. The architecture $$f$$ that maps input $$\boldsymbol{X}$$ to outputs $$\boldsymbol{y}$$ with parameters $$\boldsymbol{\theta}$$ is in this case the sigmoid function with parameters;
 2. the learning algorithm is a simple (stochastic) gradient descent;
 3. and the objective function is the likelihood function.
 
