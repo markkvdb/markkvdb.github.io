@@ -1,4 +1,7 @@
-# Logistic Regression in PyTorch
+---
+layout: post
+title: Logistic Regression in PyTorch from Scratch (Lesson 2)
+---
 
 In this article we will explore the logistic regression and how we can implement it using PyTorch. Contrary to regular regressions where the output variable $y$ is continuous, logistic regressions concern binary variables, i.e.,
 
