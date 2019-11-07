@@ -149,9 +149,7 @@ ax.scatter(x[:,1], y_linear, label='y_ols')
 leg = ax.legend();
 ```
 
-
 ![png](../img/fastai-lesson2/output_10_0.png)
-
 
 Indeed, we observe that all observations lay between the $$[0, 1]$$ interval.
 
