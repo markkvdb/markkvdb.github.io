@@ -81,7 +81,7 @@ $$f(\boldsymbol{x}) \iff c(\boldsymbol{\theta}) = c(f(\boldsymbol{\theta}; \bold
 
 The idea of gradient-based optimisation is to "improve" our function $f$ by changing the values of $\boldsymbol{x}$ slightly at every step. If $\boldsymbol{x}_0$ is the current value then we compute the gradient $\boldsymbol{g}$ of $f$ at point $\boldsymbol{x}_0$ and take a small step in this direction, i.e., 
 
-$$\boldsymbol{x}_1 = \boldsymbol{x}_0 - \epsilon \boldsymbol{g}.$$ If we fill this into the equation $\eqref{taylor}$ we get 
+$$\boldsymbol{x}_1 = \boldsymbol{x}_0 - \epsilon \boldsymbol{g}.$$ If we fill this into the equation \eqref{taylor} we get
 
 $$
 \begin{equation}\label{true_learn}\tag{2}
@@ -107,21 +107,21 @@ Although state-of-the-art models do not directly use the gradient to improve the
 
 ![IMAGE ALT TEXT HERE](../img/fastai-lesson2/learning_rate.png)
 
-In the plot on the right we see what happens when the learning rate is too high. The reason for this divergence is that our approximation only works when epsilon is small. If epsilon gets larger, the last term of equation $\eqref{true_learn}$ and higher order terms generally are no longer close to zero. Hence, the true value $f(\boldsymbol{x}_1)$ might be larger than $f(\boldsymbol{x}_0)$ resulting in the behaviour seen in the right graph.
+In the plot on the right we see what happens when the learning rate is too high. The reason for this divergence is that our approximation only works when epsilon is small. If epsilon gets larger, the last term of equation \eqref{true_learn} and higher order terms generally are no longer close to zero. Hence, the true value $f(\boldsymbol{x}_1)$ might be larger than $f(\boldsymbol{x}_0)$ resulting in the behaviour seen in the right graph.
 
 ### Learning rate too low
 
-If the learning rate is very low, then the gradient-based optimisation and its first-order linear approximation as in $\eqref{approx_learn}$ accurately model the cost function $c$ close to the last parameter values $\boldsymbol{\theta}$. However, if the learning rate is too low, it will take many epochs to reach some kind of local minimum. Furthermore, if our function is not globally convex, we might never reach a good local minimum since we cannot escape the current path to the nearest local minimum. 
+If the learning rate is very low, then the gradient-based optimisation and its first-order linear approximation as in \eqref{approx_learn} accurately model the cost function $c$ close to the last parameter values $\boldsymbol{\theta}$. However, if the learning rate is too low, it will take many epochs to reach some kind of local minimum. Furthermore, if our function is not globally convex, we might never reach a good local minimum since we cannot escape the current path to the nearest local minimum.
 
 ### Too few epochs
 
-One problem with too few epochs relates to the figure above. In the left graph, we see that when the learning rate is too low, then it takes many epochs to reach the minimum. Hence, if we set the number of epochs too low, we will not come close to this minimum. 
+One problem with too few epochs relates to the figure above. In the left graph, we see that when the learning rate is too low, then it takes many epochs to reach the minimum. Hence, if we set the number of epochs too low, we will not come close to this minimum.
 
 Another problem with too few epochs arises when the objective function is no longer globally convex (which it never is!!). Consider the following figure which shows the "surface" of an objective function with two parameters, say $\theta_0$ and $\theta_1$.
 
 ![IMAGE ALT TEXT HERE](../img/fastai-lesson2/objective_surface.jpeg)
 
-If we start with randomly selected paramater values it is unlikely that we will ever reach the global minimum of the above objective function. There are ways to deal with this, such as more advanced learning algorithms instead of our basic gradient-descent algorithm in $\eqref{approx_learn}$ (which still consistutes the basis of all these algorithms). However, if we only allow for a small number of epochs, the learning process does not have the opportunity to explore many regions of the objective surface.
+If we start with randomly selected paramater values it is unlikely that we will ever reach the global minimum of the above objective function. There are ways to deal with this, such as more advanced learning algorithms instead of our basic gradient-descent algorithm in \eqref{approx_learn} (which still consistutes the basis of all these algorithms). However, if we only allow for a small number of epochs, the learning process does not have the opportunity to explore many regions of the objective surface.
 
 ### Too many epochs
 
@@ -131,7 +131,7 @@ When we train our model, we only have access to a limited (although often large)
 
 ![IMAGE ALT TEXT HERE](../img/fastai-lesson2/overfitting_1.png)
 
-Our mean squared error is almost zero. Excellent! Now, what happens when we obtain a new sample and check the objective function under this new data? It is likely that the model on the middle now outperforms the model on the right.
+Our mean squared error is almost zero. Excellent! Now, what happens when we obtain a new sample and check the objective function under this new data? It is likely that the model on the middle now outperforms the model on the right, since it captures the real relationship between the input data $\boldsymbol{X}$ and the output $\boldsymbol{y}$ better than the overfitted model.
 
 One remark related to modern model architectures: models are typically so large (in the number of parameters) that it is almost impossible to overfit the model as in the above figure. It would simply require too many epochs and a very good learning algorithm to ever overfit like this.
 
