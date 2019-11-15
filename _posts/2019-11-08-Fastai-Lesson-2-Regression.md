@@ -12,7 +12,9 @@ y = \begin{cases}
 \end{cases}
 $$
 
-We are interested in modelling the conditional probability of $$y = 1$$ given $$\boldsymbol{x}$$, i.e.,
+There are many applications that deal with these binary variables. Consider a spam classifier: typically we want to predict whether a particular email is spam ($$y=1$$) or not spam ($$y=0$$). Whether or not an email is spam typically depends on many features such as the sender, the content and the time of the email. These features are captured by $$\boldsymbol{x}$$. 
+
+Mathematically, we are interested in modelling the conditional probability of $$y = 1$$ given $$\boldsymbol{x}$$, i.e.,
 
 $$
 p = P(y = 1 \mid \boldsymbol{X}; \boldsymbol{b}) = F(\boldsymbol{X}^T \boldsymbol{b})
@@ -24,7 +26,7 @@ $$
 
 ---
 
-Since we want to model conditional probabilities, we want $$F$$ to map to the domain $$[0, 1]$$. It now happens that the sigmoid function, let's call it $$h$$, has some very nice properties. It is defined as
+Since we want to model conditional probabilities, we want $$F$$ to map to the domain $$[0, 1]$$. A popular approach is to use the cumulative density function of any distribution. The most popular of which is the CDF of the logistic distribution. This function goes under the name of the sigmoid function, let's call it $$h$$, and it has some very nice properties. It is defined as
 
 $$
 h(x) = \frac{1}{1 + e^{-x}}.
@@ -130,7 +132,7 @@ This equation follows immediately from the first order condition of the mean-squ
 
 $$
 \begin{align}
-0 = \frac{\partial (\boldsymbol{y} - \boldsymbol{X}^T \boldsymbol{b})^T(\boldsymbol{y} - \boldsymbol{X}^T \boldsymbol{b})}{\partial \boldsymbol{b}} &= \frac{\partial \boldsymbol{y}^T\boldsymbol{y}}{\partial \boldsymbol{b}} - \frac{\partial 2\boldsymbol{b}^T\boldsymbol{X}^T\boldsymbol{y}}{\partial \boldsymbol{b}} + \frac{\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{b}}{\partial \boldsymbol{b}} \\
+0 = \frac{\partial (\boldsymbol{y} - \boldsymbol{X}^T \boldsymbol{b})^T(\boldsymbol{y} - \boldsymbol{X}^T \boldsymbol{b})}{\partial \boldsymbol{b}} &= \frac{\partial \boldsymbol{y}^T\boldsymbol{y}}{\partial \boldsymbol{b}} - \frac{\partial 2\boldsymbol{b}^T\boldsymbol{X}^T\boldsymbol{y}}{\partial \boldsymbol{b}} + \frac{\boldsymbol{b}^T\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{b}}{\partial \boldsymbol{b}} \\
 &= -2 \boldsymbol{X}^T \boldsymbol{y} + 2  \boldsymbol{X}^T  \boldsymbol{X} \boldsymbol{b}.
 \end{align}
 $$
@@ -238,7 +240,7 @@ plt.scatter(x[:,1], (torch.sigmoid((x@b)) > 0.5).double())
 
 --- 
 
-* The gradient descent implementation in pytorch does not work yet. If you know what I am doing wrong please let me know!*
+*The gradient descent implementation in pytorch does not work yet. If you know what I am doing wrong please let me know!*
 
 ---
 
