@@ -20,7 +20,7 @@ R package for downloading WHO datasets using their GHO API with data transformat
 
 ### [MDSDHVRP-Solver](https://github.com/markkvdb/MDSDHVRP-Solver) (sexy name alert!)
 
-High-performance meta-heuristic algorithm written in C++ to solve a vehicle routing problem with multiple depots with split-delivery support.
+High-performance meta-heuristic algorithm written in C++ to solve a vehicle routing problem with multiple depots and split-delivery support.
 
 - Performed extensive profiling analysis to find bottlenecks in the developed algorithm.
 - Made major contributions to the code-base in a Object-Oriented-Programming environment.
