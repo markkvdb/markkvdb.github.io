@@ -19,6 +19,7 @@ title: Useful Links
 - [Guide to Feature Extraction](https://mlwhiz.com/blog/2019/05/19/feature_extraction/): Hitchhiker's guide to feature extraction.
 - [Predictive Maintenance Solutions](https://docs.microsoft.com/en-us/azure/machine-learning/team-data-science-process/cortana-analytics-playbook-predictive-maintenance): Predictive mainentance solutions from a Machine Learning perspective.
 - [It's not just p=0.048 vs. p=0.052](https://statmodeling.stat.columbia.edu/2019/09/06/__trashed-2/): *Another* discussion about statistical significance.
+- [Data Project Checklist](https://www.fast.ai/2020/01/07/data-questionnaire/): Data projects are much more than training an accurate model.
 
 ### Programming
 
