@@ -26,6 +26,7 @@ title: Useful Links
 - [C++ Annotations](http://www.icce.rug.nl/documents/cplusplus/): Excellent reference manual for the C++ programming language
 - [Teach Yourself to Program in 10 Years](http://norvig.com/21-days.html): Not everything happens overnight
 - [String Formatting in Python 3](https://pyformat.info): Take advantage of the advanced string formatting techniques in Python 3
+- [The Missing Semester of Your CS Education](https://missing.csail.mit.edu): Short course to master essential productivity tools for programmers
 
 ### Miscellaneous
 
