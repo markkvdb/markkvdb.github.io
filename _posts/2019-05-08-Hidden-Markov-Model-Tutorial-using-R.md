@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Hidden Markov Model Tutorial in R
+mathjax: true
 ---
 
 This document contains an introduction to Hidden Markov Models (HMMs).
