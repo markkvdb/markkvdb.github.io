@@ -3,7 +3,7 @@ layout: post
 title: Logistic Regression in PyTorch from Scratch (Lesson 2)
 ---
 
-In this article we will explore the logistic regression and how we can implement it using PyTorch. Contrary to regular regressions where the output variable $$y$$ is continuous, logistic regressions concern binary variables, i.e.,
+In this article we will explore the logistic regression and how we can implement it using PyTorch. Contrary to linear regressions where the output variable $$y$$ is continuous, logistic regressions concern binary variables, i.e.,
 
 $$
 y = \begin{cases}
@@ -12,13 +12,13 @@ y = \begin{cases}
 \end{cases}
 $$
 
-There are many applications that deal with these binary variables. Consider a spam classifier: typically we want to predict whether a particular email is spam ($$y=1$$) or not spam ($$y=0$$). Whether or not an email is spam typically depends on many features such as the sender, the content and the time of the email. These features are captured by $$\boldsymbol{x}$$. 
-
-Mathematically, we are interested in modelling the conditional probability of $$y = 1$$ given $$\boldsymbol{x}$$, i.e.,
+We are interested in modelling the conditional probability of $$y = 1$$ given $$\boldsymbol{x}$$, i.e.,
 
 $$
-p = P(y = 1 \mid \boldsymbol{X}; \boldsymbol{b}) = F(\boldsymbol{X}^T \boldsymbol{b})
-$$
+p = P(y = 1 \mid \boldsymbol{X}; \boldsymbol{b}) = F(\boldsymbol{X}^T \boldsymbol{b}).
+$$$
+
+As an example, we might want to find the probability of a patient having cancer ($$y=1$$) given the patient's medical information ($$x$$).
 
 ---
 
@@ -26,7 +26,7 @@ $$
 
 ---
 
-Since we want to model conditional probabilities, we want $$F$$ to map to the domain $$[0, 1]$$. A popular approach is to use the cumulative density function of any distribution. The most popular of which is the CDF of the logistic distribution. This function goes under the name of the sigmoid function, let's call it $$h$$, and it has some very nice properties. It is defined as
+Since we want to model conditional probabilities, we want $$F$$ to map to the domain $$[0, 1]$$. It now happens that the sigmoid function, let's call it $$h$$, has some very nice properties. It is defined as
 
 $$
 h(x) = \frac{1}{1 + e^{-x}}.
@@ -50,18 +50,19 @@ Let's first create a sample of our $$\boldsymbol{X}: n \times 2$$ feature matrix
 
 ```python
 x = torch.ones(n, 2) 
-x[:,1].normal_(5., 1.)
+x[:,0].normal_(1, 0.2)
+x[:,1].normal_(5, 1.)
 x[:5,:]
 ```
 
 
 
 
-    tensor([[1.0000, 5.7177],
-            [1.0000, 4.3741],
-            [1.0000, 5.1200],
-            [1.0000, 4.8178],
-            [1.0000, 6.2329]])
+    tensor([[1.1678, 6.1665],
+            [0.9792, 5.8922],
+            [1.3373, 4.1348],
+            [0.8830, 6.4242],
+            [1.0932, 5.6926]])
 
 
 
@@ -71,11 +72,11 @@ $$
 \boldsymbol{y}^* = \boldsymbol{X}^T\boldsymbol{b} + \boldsymbol{\varepsilon},
 $$
 
-where $$\boldsymbol{b} = [2, -1]$$ and $$\boldsymbol{\varepsilon} \sim \text{Logistic}(0, 1)$$
+where $$\boldsymbol{b} = [5, -1]$$ and $$\boldsymbol{\varepsilon} \sim \text{Logistic}(0, 1)$$
 
 
 ```python
-b = tensor(5.,-1.)
+b = tensor(5,-1.)
 
 # Create logistic distribution in pytorch using inverse CDF sampling
 base_distribution = torch.distributions.Uniform(0, 1)
@@ -84,7 +85,7 @@ logistic = torch.distributions.TransformedDistribution(base_distribution, transf
 
 # Take sample of errors and compute y_star
 error = logistic.rsample([n])
-y_star = torch.sigmoid(x@b + error)
+y_star = x@b + error
 ```
 
 The dependent variable can be computed as 
@@ -100,12 +101,14 @@ $$
 This relates to the probability $$p$$ as follows
 $$
 \begin{align}
-P(y^* > 0) &= P(\boldsymbol{X}^T\boldsymbol{b} + \boldsymbol{\varepsilon} > 0) & \\
-&= P(\boldsymbol{\varepsilon} \leq -\boldsymbol{X}^T\boldsymbol{b}) &\\
-&= P(\boldsymbol{\varepsilon} \leq \boldsymbol{X}^T\boldsymbol{b}) & \text{ (logistic regression is symmetric)} \\
+P(y = 1) &= P(y^* > 0) & \\
+&= P(\boldsymbol{x}^T\boldsymbol{b} + \varepsilon > 0) & \\
+&= P(\varepsilon > -\boldsymbol{x}^T\boldsymbol{b}) &\\
+&= P(\varepsilon \leq \boldsymbol{x}^T\boldsymbol{b}) & \text{ (logistic regression is symmetric)} \\
 &= F(\boldsymbol{X}^T\boldsymbol{b}) = p.
 \end{align}
 $$
+
 
 ```python
 y = y_star > 0
@@ -120,7 +123,7 @@ p = \boldsymbol{X}^T\boldsymbol{b} + \boldsymbol{\varepsilon},
 $$
 where $$\boldsymbol{\varepsilon} \sim (0, \sigma^2)$$.
 
-Note that although we have no guarantee that $$p$$ lies in the interval $$[0,1]$$, this rarily happens. A bigger problem is the heteroskedasticity of the error term. The linear model assumes the errors are homoskedastic, but it is possible to incoorporate heteroskedastic errors by estimating white standard errors.
+Note that although we have no guarantee that $$p$$ lies in the interval $$[0,1]$$, this rarely happens. A bigger problem is the heteroskedasticity of the error term. The linear model assumes the errors are homoskedastic, but it is possible to incoorporate heteroskedastic errors by estimating white standard errors.
 
 Since we are dealing with a linear model, we do not need gradient descent and we can compute the MLE estimator in one line. The OLS (and MLE) estimator for $$\boldsymbol{b}$$ is given by
 
@@ -132,10 +135,11 @@ This equation follows immediately from the first order condition of the mean-squ
 
 $$
 \begin{align}
-0 = \frac{\partial (\boldsymbol{y} - \boldsymbol{X}^T \boldsymbol{b})^T(\boldsymbol{y} - \boldsymbol{X}^T \boldsymbol{b})}{\partial \boldsymbol{b}} &= \frac{\partial \boldsymbol{y}^T\boldsymbol{y}}{\partial \boldsymbol{b}} - \frac{\partial 2\boldsymbol{b}^T\boldsymbol{X}^T\boldsymbol{y}}{\partial \boldsymbol{b}} + \frac{\boldsymbol{b}^T\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{b}}{\partial \boldsymbol{b}} \\
+0 = \frac{\partial (\boldsymbol{y} - \boldsymbol{X}^T \boldsymbol{b})^T(\boldsymbol{y} - \boldsymbol{X}^T \boldsymbol{b})}{\partial \boldsymbol{b}} &= \frac{\partial \boldsymbol{y}^T\boldsymbol{y}}{\partial \boldsymbol{b}} - \frac{\partial 2\boldsymbol{b}^T\boldsymbol{X}^T\boldsymbol{y}}{\partial \boldsymbol{b}} + \frac{\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{b}}{\partial \boldsymbol{b}} \\
 &= -2 \boldsymbol{X}^T \boldsymbol{y} + 2  \boldsymbol{X}^T  \boldsymbol{X} \boldsymbol{b}.
 \end{align}
 $$
+
 
 
 ```python
@@ -151,13 +155,15 @@ ax.scatter(x[:,1], y_linear, label='y_ols')
 leg = ax.legend();
 ```
 
-![png](../img/fastai-lesson2/output_10_0.png)
 
-Indeed, we observe that all observations lay between the $$[0, 1]$$ interval.
+![png](output_10_0.png)
+
+
+Indeed, we observe that almost all observations lay between the $$[0, 1]$$ interval.
 
 ## Logistic regression
 
-Unlike the linear regression, the logistic regression has no closed-form solution. The most popular way of estimating the parameters $$\boldsymbol{b}$$ is to estimate the maximum likelihood estimator. Consider the following product
+Unlike the linear regression, the logistic regression has no closed-form solution. The most popular way of estimating the parameters $$\boldsymbol{b}$$ is to estimate the maximum likelihood estimator:
 
 $$
 \begin{align}
@@ -168,10 +174,10 @@ $$
 
 Remember that we wanted $$P(y = 1 \mid \boldsymbol{x}_i; \boldsymbol{b})$$ to be close to one when $$y_i = 1$$. If that's our goal, it means that we want $$LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y})$$ to be as large as possible. In other words, we want to find a $$\boldsymbol{b}$$ such that $$LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y})$$ is maximised.
 
-Since computers do not like the product of many numbers between $$[0, 1]$$ because it results in floating point problems (why would that be?). Therefore, we take the log of the likelihood function. Since the log is a monotonic function, maximising the likelihood is the same as maximising the log-likelihood, i.e.,
+Since computers do not like the product of many numbers between $$[0, 1]$$ because it results in floating point problems (why would that be?). Therefore, we take the log of the likelihood function. Since the log is a monotonic function, maximising the likelihood is the same as maximising the log-likelihood. Because our objective is now additive, a last trick that we can use is to divide this log-likelihood by the sample size. This gives
 
 $$
-ll(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y}) = \sum_{i=1}^N y_i \log(h(\boldsymbol{x}_i^T\boldsymbol{b})) + (1-y_i) \log(1-h(\boldsymbol{x}_i^T\boldsymbol{b})).
+ll(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y}) = \frac{1}{N} \sum_{i=1}^N y_i \log(h(\boldsymbol{x}_i^T\boldsymbol{b})) + (1-y_i) \log(1-h(\boldsymbol{x}_i^T\boldsymbol{b})).
 $$
 
 In PyTorch we can simply formulate this as
@@ -179,7 +185,7 @@ In PyTorch we can simply formulate this as
 
 ```python
 def ll(x, y, b):
-    return(-torch.log(torch.sigmoid(x@b)[y]).sum() - torch.log(1 - torch.sigmoid(x@b)[~y]).sum())
+    return((1/len(y)) * (torch.log(torch.sigmoid(x@b)[y]).sum() + torch.log(1 - torch.sigmoid(x@b)[~y]).sum()))
 ```
 
 Like I mentioned before, this (log-)likelihood function does not have a closed-form solution (*check it if you want :)*). Therefore, we will apply the (stochastic) gradient descent algorithm to train our model.
@@ -195,7 +201,7 @@ def update():
     if t % 10 == 0: print(loss)
     with torch.no_grad():
         print(b.grad)
-        b.sub_(lr * b.grad)
+        b.sub_(-lr * b.grad)
         b.grad.zero_()
 ```
 
@@ -206,43 +212,65 @@ for t in range(10): update()
 print(b)
 ```
 
-    tensor(69.4351, grad_fn=<SubBackward0>)
-    tensor([12.9050, 80.7974])
-    tensor([ -49.0000, -229.5924])
-    tensor([nan, nan])
-    tensor([nan, nan])
-    tensor([nan, nan])
-    tensor([nan, nan])
-    tensor([nan, nan])
-    tensor([nan, nan])
-    tensor([nan, nan])
-    tensor([nan, nan])
+    tensor(-0.6698, grad_fn=<MulBackward0>)
+    tensor([-0.1090, -0.7824])
+    tensor([-0.0060, -0.2512])
+    tensor([ 0.0269, -0.0826])
+    tensor([ 0.0369, -0.0312])
+    tensor([ 0.0400, -0.0153])
+    tensor([ 0.0409, -0.0104])
+    tensor([ 0.0412, -0.0088])
+    tensor([ 0.0412, -0.0083])
+    tensor([ 0.0412, -0.0082])
+    tensor([ 0.0411, -0.0081])
     Parameter containing:
-    tensor([nan, nan], requires_grad=True)
+    tensor([ 1.3062, -0.2848], requires_grad=True)
 
 
 
 ```python
-plt.scatter(x[:,1], y.float())
-plt.scatter(x[:,1], (torch.sigmoid((x@b)) > 0.5).double())
+y_log = torch.sigmoid(x@b)
+y_log_hat = (y_log > 0.5).float()
+
+fig, ax = plt.subplots()
+ax.scatter(x[:,1], y.float(), label='y')
+ax.scatter(x[:,1], y_log, label='y_logistic')
+leg = ax.legend();
+```
+
+
+![png](output_17_0.png)
+
+
+## Evaluating the linear and logistic classification models
+
+The most basic tool to evaluate the performance of our classification models is to compute the accuracy. The accuracy is the percentage of correctly predicted labels $$\boldsymbol{y}$$. For our linear model we have
+
+
+```python
+(y_linear_hat == y.float()).sum().float() * 100 / len(y)
 ```
 
 
 
 
-    <matplotlib.collections.PathCollection at 0x1a25383a50>
+    tensor(75.)
+
+
+
+and our logistic model has an accuracy of
+
+
+```python
+(y_log_hat == y.float()).sum().float() * 100 / len(y)
+```
 
 
 
 
-![png](../img/fastai-lesson2/output_17_1.png)
+    tensor(72.)
 
 
---- 
-
-*The gradient descent implementation in pytorch does not work yet. If you know what I am doing wrong please let me know!*
-
----
 
 ## Conclusion
 
